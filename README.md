@@ -21,7 +21,7 @@ Anthony C.
 
 Eli G.
 
-Adya S.
+Adya Sengupta - <adyaseng@uw.edu>
 
 Nate W. - <nww831@uw.edu>
 

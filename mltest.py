@@ -31,7 +31,7 @@ except Exception:
 
 # function used to transform the integer given in the challenge into a binary bit array for the ML
 def int2Bitarray(x: int, width: int) -> np.ndarray:
-    s = np.binaryRepr(int(x), width=width)
+    s = np.binary_repr(int(x), width=width)
     return np.array([int(ch) for ch in s], dtype=np.int8)
 
 # loads .csv files that contain the challenge response pairs

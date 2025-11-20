@@ -32,10 +32,10 @@ responses = toBinary(responses)
 
 ## Convert the challenges and respones to ints
 ## challenges = [int(challenge) for challenge in challenges]
-responsesFormatted = [int(response) for response in responses]
+responsesFormatted = [str(response) for response in responses]
 challengesFormatted = []
 for i in range(len(challenges)):
-    challengesFormatted.append(int("".join(map(str, challenges[i]))))
+    challengesFormatted.append("".join(map(str, challenges[i])))
 
 ## Writes the data to a CSV file
 with open('challenge-response-pairs.csv', 'w', newline='') as csvfile:

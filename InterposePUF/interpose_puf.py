@@ -31,12 +31,15 @@ challenges = toBinary(challenges)
 responses = toBinary(responses)
 
 ## Convert the challenges and respones to ints
-challenges = [int("".join(map(str, challenge)), 2) for challenge in challenges]
-responses = [int(response) for response in responses]
+## challenges = [int(challenge) for challenge in challenges]
+responsesFormatted = [str(response) for response in responses]
+challengesFormatted = []
+for i in range(len(challenges)):
+    challengesFormatted.append("".join(map(str, challenges[i])))
 
 ## Writes the data to a CSV file
-with open('challenge-response-pairs.csv', 'w', newline='') as csvfile:
+with open('interpose_crp.csv', 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow(['Challenge', 'Response']) # Header
-    for chal, resp in zip(challenges, responses):
+    for chal, resp in zip(challengesFormatted, responsesFormatted):
         writer.writerow([chal, resp])

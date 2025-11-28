@@ -20,10 +20,10 @@ def toBinary(arr: np.ndarray) -> np.ndarray:
 # seed=1: Random seed for reproducibility
 # noisiness=.05: Response noise level
 # N=20: Number of evaluations per challenge
-mv_puf = MajorityVoteInterposePUF(n=64, k_up=8, k_down=8, seed=1, noisiness=.05, N=50)
+mv_puf = MajorityVoteInterposePUF(n=64, k_up=8, k_down=8, seed=8, noisiness=.05, N=50)
 
 # Generate N random 64-bit challenge vectors using a set random seed
-challenges = random_inputs(n=64, N=1000, seed=2)
+challenges = random_inputs(n=64, N=1000000, seed=9)
 
 # Simulate the PUF responses to these challenges
 responses = mv_puf.eval(challenges)
@@ -40,7 +40,7 @@ for i in range(len(challenges)):
     challengesFormatted.append("".join(map(str, challenges[i])))
 
 ## Writes the data to a CSV file
-with open('mvi_crp.csv', 'w', newline='') as csvfile:
+with open('10^6_mvi_crp.csv', 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow(['Challenge', 'Response']) # Header
     for chal, resp in zip(challengesFormatted, responsesFormatted):

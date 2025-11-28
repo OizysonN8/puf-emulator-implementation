@@ -19,7 +19,7 @@ How would someone set up and use our implementations?
 ## Authors
 Anthony C. - <anttom15@uw.edu>
 
-Eli G.
+Eli G. - <egold3@uw.edu>
 
 Adya Sengupta - <adyaseng@uw.edu>
 

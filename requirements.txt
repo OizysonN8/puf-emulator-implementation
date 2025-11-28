@@ -3,3 +3,7 @@ pandas==2.2.2
 scikit-learn==1.5.2
 matplotlib==3.9.2
 pypuf==3.2.1
+torch==2.3.1
+tensorboard==2.15.0
+tqdm==4.66.1
+

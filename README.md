@@ -17,7 +17,7 @@ What libraries and other prerequisites will users need before using our code?
 How would someone set up and use our implementations?
 
 ## Authors
-Anthony C.
+Anthony C. - <anttom15@uw.edu>
 
 Eli G.
 

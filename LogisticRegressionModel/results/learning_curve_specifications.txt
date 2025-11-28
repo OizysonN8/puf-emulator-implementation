@@ -1,0 +1,8 @@
+Full Learning-Curve Experiment
+---------------------------------
+trainFracs = [0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 1.0]
+numRepeat = 5
+testSize  = 0.3
+randomSeed = 1
+transform = arbiterFeatureTransform(k=1)
+models = DummyClassifier(stratified), LogisticRegression(lbfgs)

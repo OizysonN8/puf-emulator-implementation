@@ -309,7 +309,7 @@ if __name__ == "__main__":
         paths = []
         for root, dirs, files in os.walk("."):
             # Skip results folder entirely
-            if "results" in root.lower():
+            if "lrResults" in root.lower():
                 continue
 
             for f in files:
@@ -328,7 +328,7 @@ if __name__ == "__main__":
 
     
     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-    RESULTS_DIR = os.path.join(SCRIPT_DIR, "results")
+    RESULTS_DIR = os.path.join(SCRIPT_DIR, "lrResults")
     os.makedirs(RESULTS_DIR, exist_ok=True)
 
 
@@ -374,7 +374,7 @@ if __name__ == "__main__":
 
 
     specs_file = os.path.join(RESULTS_DIR, "learning_curve_specifications.txt")
-    with open("LogisticRegressionModel/results/learning_curve_specifications.txt", "w") as f:
+    with open("LogisticRegressionModel/lrResults/learning_curve_specifications.txt", "w") as f:
         f.write("Full Learning-Curve Experiment\n")
         f.write("---------------------------------\n")
         f.write(f"trainFracs = {full_trainFracs}\n")
@@ -385,7 +385,7 @@ if __name__ == "__main__":
         f.write("models = DummyClassifier(stratified), LogisticRegression(lbfgs)\n")
 
     print("\n=== FULL RUN COMPLETE ===")
-    print("All CSVs and summaries saved in /LogisticRegressionModel/results/")
+    print("All CSVs and summaries saved in /LogisticRegressionModel/lrResults/")
 
 
 

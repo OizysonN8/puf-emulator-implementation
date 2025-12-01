@@ -13,16 +13,23 @@ plt.figure(figsize=(10, 6))
 for label, file in csv_files.items():
     df = pd.read_csv(file)
 
-    mvi_df = df[df['model'] == 'logreg']
+    logreg_df = df[df['model'] == 'logreg']
 
-    # x-axis = train_frac
-    x = mvi_df['train_frac']
+    x = logreg_df['train_frac']
+    y = logreg_df['mean_accuracy']
+    yerr = logreg_df['std_accuracy']
 
-    # y-axis = mean_accuracy
-    y = mvi_df['mean_accuracy']
-
-    # Plot each dataset's curve
-    plt.plot(x, y, marker='o', linewidth=2, label=label)
+    # Plot with error bars
+    plt.errorbar(
+        x,
+        y,
+        yerr=yerr,
+        marker='o',
+        capsize=3,
+        elinewidth=1.2,
+        linewidth=2,
+        label=label
+    )
 
 # Formatting
 plt.title("MVI Model Accuracy vs. CRP Dataset Size")

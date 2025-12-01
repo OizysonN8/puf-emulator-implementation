@@ -1,0 +1,61 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from pypuf.simulation import ArbiterPUF
+from pypuf.io import random_inputs
+
+
+def toBinary(arr: np.ndarray) -> np.ndarray:
+    """Converts a -1 and 1 binary array to a 0 and 1 binary array."""
+    return (arr == 1).astype(int)
+
+
+def frac_hamming(a: np.ndarray, b: np.ndarray) -> float:
+    """Fractional Hamming distance between two 0/1 response vectors."""
+    assert a.shape == b.shape
+    return np.mean(a != b)
+
+
+# Parameters
+NUM_PUFS = 100      # number of Arbiter PUF "chips"
+NUM_CHAL = 1000    # number of shared challenges
+N_BITS = 64        # challenge length
+
+# 1) Create several independent ArbiterPUFs (different seeds = different devices)
+pufs = [ArbiterPUF(n=N_BITS, seed=i, noisiness=0.05) for i in range(NUM_PUFS)]
+
+# 2) Generate a shared set of random challenges
+challenges = random_inputs(n=N_BITS, N=NUM_CHAL, seed=1)  # shape: (NUM_CHAL, N_BITS), values in {-1, +1}
+
+# 3) Evaluate each PUF on the same challenges and convert to 0/1
+responses_list = []
+for p in pufs:
+    r = p.eval(challenges)          # shape: (NUM_CHAL,), values in {-1, +1}
+    responses_list.append(toBinary(r))
+
+# Stack to shape (NUM_PUFS, NUM_CHAL)
+responses = np.stack(responses_list, axis=0)  # each row = one PUF, each column = challenge
+
+# 4) Compute pairwise fractional Hamming distances between all device pairs
+hd_vals = []
+for i in range(NUM_PUFS):
+    for j in range(i + 1, NUM_PUFS):
+        hd = frac_hamming(responses[i], responses[j])
+        hd_vals.append(hd)
+
+hd_vals = np.array(hd_vals)
+mean_uniqueness = hd_vals.mean()
+print(f"Mean inter-device fractional Hamming distance (uniqueness): {mean_uniqueness:.4f}")
+
+# 5) Plot the uniqueness histogram
+plt.figure(figsize=(6, 4))
+plt.hist(hd_vals, bins=20, range=(0, 1),
+         color="steelblue", edgecolor="black", alpha=0.8)
+plt.axvline(mean_uniqueness, color="red", linestyle="--",
+            label=f"mean = {mean_uniqueness:.3f}")
+plt.axhline(0, color="black", linewidth=0.5)
+plt.xlabel("Fractional Hamming distance between PUFs")
+plt.ylabel("Count (PUF pairs)")
+plt.title("ArbiterPUF Uniqueness (Inter-device Hamming Distance)")
+plt.legend()
+plt.tight_layout()
+plt.show()

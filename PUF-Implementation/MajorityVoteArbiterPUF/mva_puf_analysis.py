@@ -30,7 +30,7 @@ print(f'Majority Vote PUF Uniqueness: {puf_uniqueness:.4f}')
 
 '''
 11/30 Output:
-Arbiter PUF Bias: 0.4980
-Arbiter PUF Reliability: 0.7158
+Arbiter PUF Bias: 0.4990
+Arbiter PUF Reliability: 0.9958
 Arbiter PUF Uniqueness: 0.9359
 '''

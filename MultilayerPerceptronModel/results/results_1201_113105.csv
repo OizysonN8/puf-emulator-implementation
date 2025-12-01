@@ -1,0 +1,2 @@
+run_id,model,dataset,feature_map,n_samples,n_train,n_val,n_test,test_accuracy,test_loss,best_val_accuracy,tn,fp,fn,tp,epochs,batch_size,lr,h1,h2,dropout
+1201_113105,MLP,PUF-Implementation/MajorityVoteInterposePUF/mvi-crps/10^6_mvi_crp.csv,phi,1000000,700000,150000,150000,0.5029333333333333,0.6964492291313796,0.5068866666666667,13983,60178,14382,61457,30,512,0.001,256,128,0.2

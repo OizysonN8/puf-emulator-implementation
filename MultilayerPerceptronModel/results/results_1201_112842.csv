@@ -1,0 +1,2 @@
+run_id,model,dataset,feature_map,n_samples,n_train,n_val,n_test,test_accuracy,test_loss,best_val_accuracy,tn,fp,fn,tp,epochs,batch_size,lr,h1,h2,dropout
+1201_112842,MLP,PUF-Implementation/MajorityVoteArbiterPUF/mva-crps/5x10^4_mva_crp.csv,phi,50000,35000,7500,7500,0.9845333333333334,0.042163234949111936,0.9858666666666667,3628,60,56,3756,30,512,0.001,256,128,0.2

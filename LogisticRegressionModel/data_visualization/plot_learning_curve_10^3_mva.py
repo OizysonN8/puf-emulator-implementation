@@ -8,7 +8,7 @@ csv_path = os.path.join(
     script_dir,
     "..",
     "LRResults",
-    "learning_curve_summary_10^3_mvi_crp.csv"
+    "learning_curve_summary_10^3_mva_crp.csv"
 )
 
 csv_path = os.path.normpath(csv_path)
@@ -41,11 +41,11 @@ plt.plot(
 # Styling
 plt.xlabel("Training Samples (mean_n_train)")
 plt.ylabel("Mean Accuracy")
-plt.title("Learning Curve for MajorityVoteInterposePUF Logistic Regression – 10³ Dataset")
+plt.title("Learning Curve for MajorityVoteArbiterPUF Logistic Regression – 10³ Dataset")
 plt.grid(True, alpha=0.3)
 plt.legend()
 
 plt.tight_layout()
-plt.savefig("learning_curve_10^3_mvi.png", dpi=300)
+plt.savefig("learning_curve_10^3_mva.png", dpi=300)
 
 plt.show()

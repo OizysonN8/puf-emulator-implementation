@@ -1,4 +1,3 @@
-
 """
 Deep Learning Attack on PUF Challenge–Response Data
 
@@ -11,6 +10,7 @@ Outputs:
 - confusion matrix
 - TensorBoard logs
 - best-model checkpoint
+- Results saved as CSV
 """
 
 import os
@@ -25,7 +25,6 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.linear_model import LogisticRegression
 from datetime import datetime
 import random
-import json
 
 # -------------------------------------------------------------------
 # Reproducibility
@@ -227,7 +226,46 @@ def main(args):
         clf.fit(X[:train_n], y[:train_n])
         pred = clf.predict(X[train_n:])
         acc = accuracy_score(y[train_n:], pred)
+        cm = confusion_matrix(y[train_n:], pred)
+        
         print(f"[LOGREG] Baseline accuracy: {acc:.4f}")
+        print("Confusion Matrix:\n", cm)
+        
+        # Save baseline results to CSV
+        results_df = pd.DataFrame({
+            'run_id': [run_id],
+            'model': ['LogisticRegression'],
+            'dataset': [args.csv],
+            'feature_map': [args.feature_map],
+            'n_samples': [N],
+            'n_train': [train_n],
+            'n_val': [val_n],
+            'n_test': [test_n - val_n],
+            'test_accuracy': [acc],
+            'tn': [cm[0, 0]],
+            'fp': [cm[0, 1]],
+            'fn': [cm[1, 0]],
+            'tp': [cm[1, 1]],
+            'epochs': [None],
+            'batch_size': [None],
+            'lr': [None],
+            'h1': [None],
+            'h2': [None],
+            'dropout': [None]
+        })
+        
+        out_csv = os.path.join(args.log_dir, f"results_{run_id}.csv")
+        results_df.to_csv(out_csv, index=False)
+        print(f"\nSaved results to {out_csv}")
+        
+        # Also append to master results file
+        master_csv = os.path.join(args.log_dir, "all_results.csv")
+        if os.path.exists(master_csv):
+            results_df.to_csv(master_csv, mode='a', header=False, index=False)
+        else:
+            results_df.to_csv(master_csv, index=False)
+        print(f"Appended to {master_csv}")
+        
         return
 
     # MLP Attack Model
@@ -244,7 +282,7 @@ def main(args):
         tr_loss, tr_acc = train_epoch(model, train_loader, opt, loss_fn, device)
         va_loss, va_acc, _ = eval_epoch(model, val_loader, loss_fn, device)
 
-        writer.add_scalar("/train", tr_loss, ep)
+        writer.add_scalar("loss/train", tr_loss, ep)
         writer.add_scalar("loss/val", va_loss, ep)
         writer.add_scalar("acc/train", tr_acc, ep)
         writer.add_scalar("acc/val", va_acc, ep)
@@ -263,12 +301,43 @@ def main(args):
     print(f"\nFINAL TEST ACCURACY: {te_acc:.4f}")
     print("Confusion Matrix:\n", te_cm)
 
-    # results
-    out_json = os.path.join(args.log_dir, f"final_results_{run_id}.json")
-    with open(out_json, "w") as f:
-        json.dump({"test_acc": float(te_acc), "confusion_matrix": te_cm.tolist()}, f, indent=2)
-
-    print(f"\nSaved results to {out_json}")
+    # Save results to CSV
+    results_df = pd.DataFrame({
+        'run_id': [run_id],
+        'model': ['MLP'],
+        'dataset': [args.csv],
+        'feature_map': [args.feature_map],
+        'n_samples': [N],
+        'n_train': [train_n],
+        'n_val': [val_n],
+        'n_test': [test_n],
+        'test_accuracy': [te_acc],
+        'test_loss': [te_loss],
+        'best_val_accuracy': [best_val],
+        'tn': [te_cm[0, 0]],
+        'fp': [te_cm[0, 1]],
+        'fn': [te_cm[1, 0]],
+        'tp': [te_cm[1, 1]],
+        'epochs': [args.epochs],
+        'batch_size': [args.batch],
+        'lr': [args.lr],
+        'h1': [args.h1],
+        'h2': [args.h2],
+        'dropout': [args.dropout]
+    })
+    
+    out_csv = os.path.join(args.log_dir, f"results_{run_id}.csv")
+    results_df.to_csv(out_csv, index=False)
+    print(f"\nSaved results to {out_csv}")
+    
+    # Also append to master results file for easy comparison
+    master_csv = os.path.join(args.log_dir, "all_results.csv")
+    if os.path.exists(master_csv):
+        results_df.to_csv(master_csv, mode='a', header=False, index=False)
+    else:
+        results_df.to_csv(master_csv, index=False)
+    print(f"Appended to {master_csv}")
+    
     writer.close()
 # -------------------------------------------------------------------
 
@@ -282,7 +351,7 @@ if __name__ == "__main__":
     parser.add_argument("--h1", type=int, default=256)
     parser.add_argument("--h2", type=int, default=128)
     parser.add_argument("--dropout", type=float, default=0.2)
-    parser.add_argument("--log_dir", type=str, default="results")
+    parser.add_argument("--log_dir", type=str, default="MultilayerPerceptronModel/results")
     parser.add_argument("--baseline", action="store_true")
     parser.add_argument("--cpu", action="store_true")
     args = parser.parse_args()

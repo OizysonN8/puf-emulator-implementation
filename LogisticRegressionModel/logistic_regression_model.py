@@ -311,10 +311,12 @@ if __name__ == "__main__":
             # Skip results folder entirely
             if "lrResults" in root.lower():
                 continue
+            if "results" in root.lower():
+                continue
 
             for f in files:
                 name = f.lower()
-                # Only accept true CRP files
+                # Only accept true CRP files hopefully
                 if name.endswith("crp.csv"):
                     paths.append(os.path.join(root, f))
         return paths

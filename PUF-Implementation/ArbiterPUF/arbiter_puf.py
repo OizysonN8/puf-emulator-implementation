@@ -18,7 +18,7 @@ def toBinary(arr: np.ndarray) -> np.ndarray:
 # k_down=8: Number of parallel XOR arbiter PUFs in the lower layer
 # seed=1: Random seed for reproducibility
 # noisiness=.05: Response noise level
-puf = ArbiterPUF(n=64, seed=1, noisiness=0)
+puf = ArbiterPUF(n=64, seed=1, noisiness=0.05)
 
 # Generate N random 64-bit challenge vectors using a set random seed
 challenges = random_inputs(n=64, N=1000, seed=2)

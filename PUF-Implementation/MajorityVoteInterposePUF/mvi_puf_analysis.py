@@ -2,7 +2,7 @@
 
 from pypuf.metrics import bias, reliability, uniqueness
 from pypuf.simulation import InterposePUF
-from MajorityVoteInterposePUF.MajorityVoteInterposePUF import MajorityVoteInterposePUF
+from MajorityVoteInterposePUF import MajorityVoteInterposePUF
 from numpy import average
 
 # Create an MajorityVoteInterposePUF with an Interpose PUF as the base PUF

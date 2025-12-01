@@ -45,10 +45,3 @@ with open('10^6_mva_crp.csv', 'w', newline='') as csvfile:
     writer.writerow(['Challenge', 'Response']) # Header
     for chal, resp in zip(challengesFormatted, responsesFormatted):
         writer.writerow([chal, resp])
-
-'''
-11/30 Output:
-Arbiter PUF Bias: 0.4980
-Arbiter PUF Reliability: 0.7158
-Arbiter PUF Uniqueness: 0.9359
-'''
